@@ -1,8 +1,9 @@
 import express, { Application, Request, Response } from "express";
 import nodemailer from "nodemailer";
-import Mail from "nodemailer/lib/mailer";
 
 import * as dotenv from "dotenv";
+import { connect } from "mongoose";
+import Contact from "./models/Contact";
 dotenv.config();
 
 const app: Application = express();
@@ -33,7 +34,24 @@ app.get("/", async (req: Request, res: Response): Promise<Response> => {
   });
 });
 
-app.post("/hi", async (req: Request, res: Response): Promise<Response> => {
+app.post("/contact", async (req: Request, res: Response): Promise<void> => {
+  let { email, message } = req.body;
+
+  await connect(process.env.DB_HOST || "mongodb://localhost:27017/example");
+
+  const contact = new Contact({
+    email,
+    message,
+  });
+
+  await contact.save();
+
+  console.log("Saved contact to database");
+
+  res.sendStatus(200);
+});
+
+app.post("/mail", async (req: Request, res: Response): Promise<Response> => {
   let { email, message } = req.body;
 
   const messageData = {
@@ -53,6 +71,7 @@ app.post("/hi", async (req: Request, res: Response): Promise<Response> => {
   }
 });
 
+// Server start up
 try {
   app.listen(port, (): void => {
     console.log(`Connected successfully on port ${port}`);

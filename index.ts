@@ -1,14 +1,15 @@
 import express, { Application, Request, Response } from "express";
 import nodemailer from "nodemailer";
-
+import cors from "cors";
 import * as dotenv from "dotenv";
 import { connect } from "mongoose";
 import Contact from "./models/Contact";
 dotenv.config();
 
 const app: Application = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -46,7 +47,7 @@ app.post("/contact", async (req: Request, res: Response): Promise<void> => {
 
   await contact.save();
 
-  console.log("Saved contact to database");
+  console.log("Saved contact to database: " + contact.id);
 
   res.sendStatus(200);
 });

@@ -49,12 +49,7 @@ app.post("/contact", async (req: Request, res: Response): Promise<void> => {
 
   console.log("Saved contact to database: " + contact.id);
 
-  res.sendStatus(200);
-});
-
-app.post("/mail", async (req: Request, res: Response): Promise<Response> => {
-  let { email, message } = req.body;
-
+  // Email
   const messageData = {
     from: "Jason <jason@ribble.biz>",
     to: "jasonribble@protonmail.com",
@@ -65,11 +60,11 @@ app.post("/mail", async (req: Request, res: Response): Promise<Response> => {
   try {
     const info = await transporter.sendMail(messageData);
     console.log("Message sent: %s", info.response);
-    return res.status(200).send({ message: "Ok" });
   } catch (err) {
     console.error(err);
-    return res.status(500).send({ message: "Something went wrong" });
   }
+
+  res.sendStatus(200);
 });
 
 // Server start up

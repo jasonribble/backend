@@ -19,7 +19,7 @@ const password = process.env.SMTP_PASSWORD;
 
 const transporter = nodemailer.createTransport({
   host: hostname,
-  port: 587,
+  port: 465,
   secure: false,
   requireTLS: true,
   auth: {
@@ -51,8 +51,8 @@ app.post("/contact", async (req: Request, res: Response): Promise<void> => {
 
   // Email
   const messageData = {
-    from: "Jason <jason@ribble.biz>",
-    to: "jasonribble@protonmail.com",
+    from: "Jason <process.env.MY_EMAIL>",
+    to: "process.env.TO_EMAIL",
     subject: `${email} sent you a message`,
     text: `${message}\n${email}`,
   };

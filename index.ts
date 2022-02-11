@@ -35,6 +35,12 @@ app.get("/", async (req: Request, res: Response): Promise<Response> => {
   });
 });
 
+app.get("/.well-known/acme-challenge/:content", function (req, res) {
+  res.send(
+    "0akukSfvdv9ySbVXN2bZQ2mrOKM--WQUrhvABO2KZxY.axcpo901pqu12k4-tw60OYIIE6rPevVt5ey91VsuQU4",
+  );
+});
+
 app.post("/contact", async (req: Request, res: Response): Promise<void> => {
   let { email, message } = req.body;
 

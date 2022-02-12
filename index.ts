@@ -20,7 +20,7 @@ const password = process.env.SMTP_PASSWORD;
 const transporter = nodemailer.createTransport({
   host: hostname,
   port: 465,
-  secure: false,
+  secure: true,
   requireTLS: true,
   auth: {
     user: username,
